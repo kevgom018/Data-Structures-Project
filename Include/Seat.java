@@ -1,6 +1,7 @@
 package Include;
 
 import java.util.ArrayList;
+import java.util.Objects;
 
 //  .----------------.  .----------------.  .----------------.  .----------------. 
 // | .--------------. || .--------------. || .--------------. || .--------------. |
@@ -13,7 +14,6 @@ import java.util.ArrayList;
 // | |              | || |              | || |              | || |              | |
 // | '--------------' || '--------------' || '--------------' || '--------------' |
 //  '----------------'  '----------------'  '----------------'  '----------------' 
-
 
 public class Seat {
     // The Level is tied to the cost of the seat
@@ -88,11 +88,33 @@ public class Seat {
      * @return The total cost of the seats
      */
     public static int getTotalCost(ArrayList<Seat> seats){
+        if(seats == null) { return 0; }
         int total = 0;
         for(Seat s : seats){
             total += s.getCost();
         }
         return total;
+    }
+
+    @Override
+    public String toString(){
+        return "Level: " + this.getLevel().toString() + " Row: " + this.getRow() + " Number: " + this.getNumber();
+    }
+
+    @Override
+    public boolean equals(Object o){
+        if(this == o) { return true; }
+        if(o == null) { return false; }
+        if(o instanceof Seat){
+            Seat s = (Seat) o;
+            return this.getLevel().equals(s.getLevel()) && this.getRow().equals(s.getRow()) && this.getNumber().equals(s.getNumber());
+        }
+        return false;
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(this.getLevel(), this.getRow(), this.getNumber());
     }
 
 }

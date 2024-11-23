@@ -1,5 +1,7 @@
 package Include;
 
+import java.util.Objects;
+
 //  .----------------.  .----------------.  .----------------.  .----------------.  .-----------------. .----------------. 
 // | .--------------. || .--------------. || .--------------. || .--------------. || .--------------. || .--------------. |
 // | |     ______   | || |   _____      | || |     _____    | || |  _________   | || | ____  _____  | || |  _________   | |
@@ -49,4 +51,25 @@ public class Client {
     public void setEmail(String e) { this.email = e; }
     public void setPhone(Long p) { this.phoneNum = p; }
 
+    @Override
+    public String toString(){
+        return "Name: " + this.getName() + " Email: " + this.getEmail();
+    }
+
+    @Override
+    public boolean equals(Object o){
+        if(this == o) { return true; }
+        if(o == null) { return false; }
+        if(o instanceof Client){
+            Client s = (Client) o;
+            return this.getName().equals(s.getName()) && this.getEmail().equals(s.getEmail()) && this.getPhone().equals(s.getPhone());
+        }
+        return false;
+    }
+
+    @Override
+    public int hashCode(){
+        return Objects.hash(this.getName(), this.getEmail(), this.getPhone());
+    }
+    
 }
