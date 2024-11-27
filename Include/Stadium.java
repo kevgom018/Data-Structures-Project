@@ -140,6 +140,8 @@ public class Stadium {
     /**
      * Cancels the last reservation made
      * 
+     * @param c The client whose reservation is being canceled
+     * 
      * @return A boolean representing whether the cancellation was succesful
      */
     public boolean cancel(Client c) {
@@ -152,9 +154,11 @@ public class Stadium {
             //if wait list not empty
             if(!lastRes.getSeat().getWaitList().isEmpty()){
                 c.removeClientCost(lastRes.getSeat().getCost());
-                Client nextInLine= lastRes.getSeat().nextInWaitList();
-                nextInLine.addClientCost(lastRes.getSeat().getCost());
-                this.addReservedSeatHashMap(nextInLine, lastRes.getSeat());
+                if(!lastRes.getSeat().getWaitList().isEmpty()){
+                    Client nextInLine = lastRes.getSeat().nextInWaitList();
+                    nextInLine.addClientCost(lastRes.getSeat().getCost());
+                    this.addReservedSeatHashMap(nextInLine, lastRes.getSeat());
+                }
             }else{
                 available.add(lastRes.getSeat());
                 c.removeClientCost(lastRes.getSeat().getCost());
