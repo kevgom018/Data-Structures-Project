@@ -230,12 +230,12 @@ public class ProgramWrapper {
                             continue;
                         }
                         Seat seat = new Seat(Level.GRANDSTAND, seat_row, seat_num);
-                         if(stadium.isOccupied(seat)){
-                            System.out.println("That seat is currently unavailable, would you like to be put on the waitlist?\n");
+                         if(stadium.getCurrentGrandstandLvlCap()==2000){ //INSTEAD check if stadium Level
+                            System.out.println("The Grand Stand section is currently unavailable.\n There are currently "+stadium.getGrandstandLvlWaitList().size()+" clients waiting, would you like to be put on the waitlist?\n");
                             scan.next();
                             String Y_N = scan.nextLine().toUpperCase();
                             if (Y_N.equals("YES")){
-                                seat.addToWaitList(client);
+                                stadium.addToGrandstandLvlWaitList(client);
                             }else{
                                 System.out.println("Please choose a different seat number\n"); 
                                 i--;
@@ -243,6 +243,7 @@ public class ProgramWrapper {
                          }
                          else{
                             stadium.reserve(client,seat);
+                            stadium.incrementCurrGradstandLvlCap();
                             client.addClientCost(seat.getCost());
                             System.out.println("Seat #"+seat_num+", Row #"+seat_row+" in Grandstand was successfully reserved!");
                          }
@@ -270,12 +271,12 @@ public class ProgramWrapper {
                             continue;
                         }
                         Seat seat= new Seat(Level.FIELD, seat_row, seat_num);
-                         if(stadium.isOccupied(seat)){
-                            System.out.println("That seat is currently unavailable, would you like to be put on the waitlist?\n");
+                         if(stadium.getCurrentFieldLvlCap()==500){
+                            System.out.println("That Field section is currently unavailable.\n There are currently "+stadium.getFieldLvlWaitList().size()+" clients waiting, would you like to be put on the waitlist?\n");
                             scan.next();
                             String Y_N = scan.nextLine().toUpperCase();
                             if (Y_N.equals("YES")){
-                                seat.addToWaitList(client);
+                                stadium.addToFieldLvlWaitList(client);
                             }else{
                                 System.out.println("Please choose a different seat number\n"); 
                                 i--;
@@ -283,6 +284,7 @@ public class ProgramWrapper {
                          }
                          else{
                             stadium.reserve(client,seat);
+                            stadium.incrementCurrFieldLvlCap();
                             client.addClientCost(seat.getCost());
                             System.out.println("Seat #"+seat_num+", Row #"+seat_row+" in Field was successfully reserved!");
 
@@ -311,12 +313,12 @@ public class ProgramWrapper {
                             continue;
                         }
                         Seat seat = new Seat(Level.MAIN, seat_row, seat_num);
-                         if(stadium.isOccupied(seat)){
-                            System.out.println("That seat is currently unavailable, would you like to be put on the waitlist?\n");
+                         if(stadium.getCurrentMainLvlCap()==1000){
+                            System.out.println("That seat is currently unavailable.\n There are currently \n"+stadium.getGrandstandLvlWaitList().size()+" clients waiting, would you like to be put on the waitlist?\n");
                             scan.next();
                             String Y_N = scan.nextLine().toUpperCase();
                             if (Y_N.equals("YES")){
-                                seat.addToWaitList(client);
+                                stadium.addToMainLvlWaitList(client);
                             }else{
                                 System.out.println("Please choose a different seat number\n"); 
                                 i--;
@@ -324,6 +326,7 @@ public class ProgramWrapper {
                          }
                          else{
                             stadium.reserve(client,seat);
+                            stadium.incrementCurrMainLvlCap();
                             client.addClientCost(seat.getCost());
                             System.out.println("Seat #" + seat_num +", Row #"+seat_row+" in Main was successfully reserved!\n");
                          }

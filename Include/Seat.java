@@ -1,10 +1,9 @@
 package Include;
 
 import java.util.ArrayList;
-import java.util.HashSet;
 import java.util.Objects;
-import java.util.Queue;
-import java.util.LinkedList;
+
+
 
 //  .----------------.  .----------------.  .----------------.  .----------------. 
 // | .--------------. || .--------------. || .--------------. || .--------------. |
@@ -21,22 +20,22 @@ import java.util.LinkedList;
 public class Seat {
     // The Level is tied to the cost of the seat
     public enum Level {
-        UNKNOWN, // = 0
-        FIELD, // = 300
-        MAIN, // = 120
-        GRANDSTAND; // = 45
+        UNKNOWN, // = $0
+        FIELD, // = $300
+        MAIN, // = $120
+        GRANDSTAND; // = $45
     };
-    private Level level;
+
+    private Level level; 
     private Integer row;
     private Integer number;
-    private Queue<Client> waitList;
+
 
 
     public Seat(Level level, Integer row, Integer number){
         this.level = level;
         this.row = row;
         this.number = number;     
-        this.waitList= new LinkedList<>();
     }
 
     public Seat(){
@@ -68,7 +67,6 @@ public class Seat {
                 return -1;
         }
     }
-    public Queue<Client> getWaitList(){return this.waitList; }
     //  ____           _     _                       
     // / ___|    ___  | |_  | |_    ___   _ __   ___ 
     // \___ \   / _ \ | __| | __|  / _ \ | '__| / __|
@@ -85,13 +83,6 @@ public class Seat {
     // | |_| | |_| | | |  __/ |    |  _|| |_| | | | | (__| |_| | (_) | | | \__ \
     //  \___/ \__|_| |_|\___|_|    |_|   \__,_|_| |_|\___|\__|_|\___/|_| |_|___/
 
-    public void addToWaitList(Client c){
-        this.waitList.offer(c);
-    }
-
-    public Client nextInWaitList(){
-        return this.waitList.poll();
-    }
     /**
      * Calculates the total cost of a list of seats
      * 

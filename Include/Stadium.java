@@ -2,6 +2,8 @@ package Include;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.HashSet;
+import java.util.LinkedList;
+import java.util.Queue;
 import java.util.Set;
 import java.util.Stack;
 
@@ -55,16 +57,29 @@ public class Stadium {
         
     }
 
+    
     public Set<Seat> available;
     public Set<Seat> occupied;
     public Stack<Reservation> reservations;
     public HashMap<Client,Set<Seat>> reservedHashMap;
+    public Queue<Client> fieldLvlWaitList;
+    public Queue<Client> mainLvlWaitList;
+    public Queue<Client> grandstandLvlWaitList;
+    public Integer currFieldLvlCap;
+    public Integer currMainLvlCap;
+    public Integer currGrandstandLvlCap;
 
     public Stadium (){
         available = new HashSet<>();
         occupied = new HashSet<>();
         reservations = new Stack<>();
         reservedHashMap= new HashMap<>();
+        fieldLvlWaitList= new LinkedList<>();
+        mainLvlWaitList= new LinkedList<>();
+        grandstandLvlWaitList= new LinkedList<>();
+        currFieldLvlCap= 0;
+        currMainLvlCap=0;
+        currGrandstandLvlCap= 0;
 
         // 50 rows of 10 field seats
         // 100 rows of 10 main seats
@@ -89,6 +104,15 @@ public class Stadium {
 
     public Set<Seat> getAvailable() { return this.available; }
     public Set<Seat> getOccupied() { return this.occupied; }
+
+    public Integer getCurrentFieldLvlCap(){ return this.currFieldLvlCap;}
+    public Integer getCurrentMainLvlCap() { return this.currMainLvlCap; }
+    public Integer getCurrentGrandstandLvlCap() { return this.currGrandstandLvlCap; }
+
+    public Queue<Client> getFieldLvlWaitList(){return this.fieldLvlWaitList; }
+    public Queue<Client> getMainLvlWaitList(){return this.mainLvlWaitList; }
+    public Queue<Client> getGrandstandLvlWaitList(){return this.grandstandLvlWaitList; }
+
     public  boolean isAvailable(Seat s) { return this.available.contains(s); }
     public  boolean isOccupied(Seat s) { return this.occupied.contains(s); }
 
@@ -97,6 +121,21 @@ public class Stadium {
     // \___ \   / _ \ | __| | __|  / _ \ | '__| / __|
     //  ___) | |  __/ | |_  | |_  |  __/ | |    \__ \
     // |____/   \___|  \__|  \__|  \___| |_|    |___/
+    public void incrementCurrFieldLvlCap(){ this.currFieldLvlCap++; }
+    public void incrementCurrMainLvlCap(){ this.currMainLvlCap++; }
+    public void incrementCurrGradstandLvlCap(){ this.currGrandstandLvlCap++; }
+
+    public void decrementCurrFieldLvlCap(){ this.currFieldLvlCap--; }
+    public void decrementCurrMainLvlCap(){ this.currMainLvlCap--; }
+    public void decrementCurrGrandstandLvlCap(){ this.currGrandstandLvlCap--; }
+    
+    public void addToFieldLvlWaitList(Client c){ this.fieldLvlWaitList.offer(c); }
+    public void addToMainLvlWaitList(Client c){ this.mainLvlWaitList.offer(c); }
+    public void addToGrandstandLvlWaitList(Client c){ this.grandstandLvlWaitList.offer(c); }
+
+    public Client nextInFieldLvlWaitList(){ return this.fieldLvlWaitList.poll(); }
+    public Client nextInMainLvlWaitList(){ return this.mainLvlWaitList.poll(); }
+    public Client nextInGrandstandLvlWaitList(){ return this.grandstandLvlWaitList.poll(); }
 
     public void addReservedSeatHashMap(Client c, Seat s){
         Set<Seat> tempSet= c.getReservedSeats();
@@ -150,20 +189,55 @@ public class Stadium {
         boolean canceled = occupied.remove(lastRes.getSeat());
 
         if(canceled) {
-            
-            //if wait list not empty
-            if(!lastRes.getSeat().getWaitList().isEmpty()){
-                c.removeClientCost(lastRes.getSeat().getCost());
-                if(!lastRes.getSeat().getWaitList().isEmpty()){
-                    Client nextInLine = lastRes.getSeat().nextInWaitList();
-                    nextInLine.addClientCost(lastRes.getSeat().getCost());
-                    this.addReservedSeatHashMap(nextInLine, lastRes.getSeat());
+            if(lastRes.getSeat().getLevel().equals(Seat.Level.FIELD)){
+                //if wait list not empty
+                if(!this.getFieldLvlWaitList().isEmpty()){
+                    c.removeClientCost(lastRes.getSeat().getCost());
+                    if(!this.getFieldLvlWaitList().isEmpty()){
+                        Client nextInLine = this.nextInFieldLvlWaitList();
+                        nextInLine.addClientCost(lastRes.getSeat().getCost());
+                        this.addReservedSeatHashMap(nextInLine, lastRes.getSeat());
+                    }
+                }else{
+                    available.add(lastRes.getSeat());
+                    c.removeClientCost(lastRes.getSeat().getCost());
+                    this.decrementCurrFieldLvlCap();
+                    this.removeReservedSeatHashMap(c, lastRes.getSeat());
                 }
-            }else{
-                available.add(lastRes.getSeat());
-                c.removeClientCost(lastRes.getSeat().getCost());
-                this.removeReservedSeatHashMap(c, lastRes.getSeat());
             }
+            else if(lastRes.getSeat().getLevel().equals(Seat.Level.MAIN)){
+                //if wait list not empty
+                if(!this.getMainLvlWaitList().isEmpty()){
+                    c.removeClientCost(lastRes.getSeat().getCost());
+                    if(!this.getMainLvlWaitList().isEmpty()){
+                        Client nextInLine = this.nextInMainLvlWaitList();
+                        nextInLine.addClientCost(lastRes.getSeat().getCost());
+                        this.addReservedSeatHashMap(nextInLine, lastRes.getSeat());
+                    }
+                }else{
+                    available.add(lastRes.getSeat());
+                    c.removeClientCost(lastRes.getSeat().getCost());
+                    this.decrementCurrMainLvlCap();
+                    this.removeReservedSeatHashMap(c, lastRes.getSeat());
+                }
+            }
+            else if(lastRes.getSeat().getLevel().equals(Seat.Level.GRANDSTAND)){
+                //if wait list not empty
+                if(!this.getGrandstandLvlWaitList().isEmpty()){
+                    c.removeClientCost(lastRes.getSeat().getCost());
+                    if(!this.getGrandstandLvlWaitList().isEmpty()){
+                        Client nextInLine = this.nextInGrandstandLvlWaitList();
+                        nextInLine.addClientCost(lastRes.getSeat().getCost());
+                        this.addReservedSeatHashMap(nextInLine, lastRes.getSeat());
+                    }
+                }else{
+                    available.add(lastRes.getSeat());
+                    c.removeClientCost(lastRes.getSeat().getCost());
+                    this.decrementCurrGrandstandLvlCap();
+                    this.removeReservedSeatHashMap(c, lastRes.getSeat());
+                }
+            }
+           
             //checks getter of seat waitlist, if waitlist not empty, first person wait 
         }
         
