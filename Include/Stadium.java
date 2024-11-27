@@ -25,22 +25,23 @@ public class Stadium {
     // |  _ <  |  __/ \__ \ |  __/ | |     \ V /  | (_| | | |_  | | | (_) | | | | |
     // |_| \_\  \___| |___/  \___| |_|      \_/    \__,_|  \__| |_|  \___/  |_| |_|
     
+
+    
+
     private class Reservation {
         private Client client;
         private Seat seat;
         //I think it should have a HashMap pairint the clients with the seats here.
-        private HashMap<Client, Set<Seat>> reservedHashMap;
+        
 
         public Reservation(Client client, Seat seat){
             this.client = client;
             this.seat = seat;
-            this.reservedHashMap= new HashMap<>();
         }
 
         public Reservation(){
             this.client = new Client();
             this.seat = new Seat();
-            this.reservedHashMap= new HashMap<>();
         }
 
         /*
@@ -48,31 +49,25 @@ public class Stadium {
          */
         public Client getClient() { return this.client; }
         public Seat getSeat() { return this.seat; }
-        public HashMap<Client,Set<Seat>> getHashMap() { return this.reservedHashMap; }
         
         /*
          * Setters
          */
         public void setClient(Client c) { this.client = c; }
         public void setSeat(Seat s) { this.seat = s; }
-        public void addReservedSeatHashMap(Client client, Seat seat){
-            client.reserveSeat(seat);
-            reservedHashMap.put(client,client.getReservedSeats());
-        }
-        public void removeReservedSeatHashMap(Client client, Seat seat){
-            client.removeSeat(seat);
-            reservedHashMap.put(client, client.getReservedSeats());
-        }
+        
     }
 
     private Set<Seat> available;
     private Set<Seat> occupied;
     private Stack<Reservation> reservations;
+    private static HashMap<Client,Set<Seat>> reservedHashMap;
 
     public Stadium (){
         available = new HashSet<>();
         occupied = new HashSet<>();
         reservations = new Stack<>();
+        reservedHashMap= new HashMap<>();
     }
 
     //   ____          _     _                       
@@ -92,7 +87,18 @@ public class Stadium {
     //  ___) | |  __/ | |_  | |_  |  __/ | |    \__ \
     // |____/   \___|  \__|  \__|  \___| |_|    |___/
 
+    //static due to reservedHashMap being a stadium local variable
+    public static void addReservedSeatHashMap(Client c, Seat s){
+        Set<Seat> tempSet= c.getReservedSeats();
+        tempSet.add(s);
+        reservedHashMap.put(c,tempSet);
 
+    }
+    public static void removeReservedSeatHashMap(Client c, Seat s){
+        Set<Seat> tempSet= c.getReservedSeats();
+        tempSet.remove(s);
+        reservedHashMap.put(c,tempSet);
+    }
 
     //    ___    _     _                       _____                          _     _                       
     //   / _ \  | |_  | |__     ___   _ __    |  ___|  _   _   _ __     ___  | |_  (_)   ___    _ __    ___ 
@@ -119,7 +125,7 @@ public class Stadium {
         if(reserved) {
             this.reservations.push(res);
             occupied.add(s);
-            res.addReservedSeatHashMap(c, s);
+            addReservedSeatHashMap(c, s);
         }
         
         return reserved;
@@ -129,7 +135,7 @@ public class Stadium {
      * 
      * @return A boolean representing whether the cancellation was succesful
      */
-    public boolean cancel() {
+    public boolean cancel(Client c) {
         // TODO: add functionality to remove the reservation from the list in the map of client to lists of seats
         // TODO: add functionality to give canceled seat to next client in waitlist (queue) if there is one on waitlist for that seats section
         // There should be a queue of clients for each of the three sections for waitlisting
@@ -139,6 +145,8 @@ public class Stadium {
 
         if(canceled) {
             available.add(lastRes.getSeat());
+            removeReservedSeatHashMap(c, lastRes.getSeat());
+            //checks getter of seat waitlist, if waitlist not empty, first person wait 
         }
         
         return canceled;
