@@ -55,10 +55,10 @@ public class Stadium {
         
     }
 
-    public  static Set<Seat> available;
-    public static Set<Seat> occupied;
+    public Set<Seat> available;
+    public Set<Seat> occupied;
     public Stack<Reservation> reservations;
-    public static HashMap<Client,Set<Seat>> reservedHashMap;
+    public HashMap<Client,Set<Seat>> reservedHashMap;
 
     public Stadium (){
         available = new HashSet<>();
@@ -85,16 +85,16 @@ public class Stadium {
     // |____/   \___|  \__|  \__|  \___| |_|    |___/
 
     //static due to reservedHashMap being a stadium local variable
-    public static void addReservedSeatHashMap(Client c, Seat s){
+    public void addReservedSeatHashMap(Client c, Seat s){
         Set<Seat> tempSet= c.getReservedSeats();
         tempSet.add(s);
-        reservedHashMap.put(c,tempSet);
+        this.reservedHashMap.put(c,tempSet);
 
     }
-    public static void removeReservedSeatHashMap(Client c, Seat s){
+    public void removeReservedSeatHashMap(Client c, Seat s){
         Set<Seat> tempSet= c.getReservedSeats();
         tempSet.remove(s);
-        reservedHashMap.put(c,tempSet);
+        this.reservedHashMap.put(c,tempSet);
     }
 
     //    ___    _     _                       _____                          _     _                       
@@ -122,7 +122,7 @@ public class Stadium {
         if(reserved) {
             this.reservations.push(res);
             occupied.add(s);
-            addReservedSeatHashMap(c, s);
+            this.addReservedSeatHashMap(c, s);
         }
         
         return reserved;
@@ -145,10 +145,10 @@ public class Stadium {
             //if wait list empty
             if(!lastRes.getSeat().getWaitList().isEmpty()){
                 Client nextInLine= lastRes.getSeat().nextInWaitList();
-                addReservedSeatHashMap(nextInLine, lastRes.getSeat());
+                this.addReservedSeatHashMap(nextInLine, lastRes.getSeat());
             }else{
                 available.add(lastRes.getSeat());
-                removeReservedSeatHashMap(c, lastRes.getSeat());
+                this.removeReservedSeatHashMap(c, lastRes.getSeat());
             }
             //checks getter of seat waitlist, if waitlist not empty, first person wait 
         }
