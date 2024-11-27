@@ -1,4 +1,5 @@
 import Include.*;
+import Include.Seat.Level;
 import java.util.Scanner;
 
 //  .----------------.  .----------------.  .----------------.  .-----------------.
@@ -14,7 +15,28 @@ import java.util.Scanner;
 //  '----------------'  '----------------'  '----------------'  '----------------' 
 
 public class ProgramWrapper {
-
+    private static Stadium stadium = new Stadium();
+    public static void create_stadium(){
+       for(int i= 0; i<3 ;i++ ){
+        if(i==0){
+            for(int seat_num=1; seat_num<=2000; seat_num++ ){
+                Seat seat= new Seat(Level.GRANDSTAND, seat_num);
+                stadium.getAvailable().add(seat);
+            }
+        }
+        if(i==2){
+            for(int seat_num=1; seat_num<=500; seat_num++ ){
+                Seat seat= new Seat(Level.FIELD, seat_num);
+                stadium.getAvailable().add(seat);
+            }
+        }
+        if(i==3){
+            for(int seat_num=1; seat_num<=1000; seat_num++ ){
+                Seat seat= new Seat(Level.FIELD, seat_num);
+                stadium.getAvailable().add(seat);
+            }
+        }
+    }}
     /**
      * Checks whether the given email is valid
      * 
@@ -72,12 +94,13 @@ public class ProgramWrapper {
         while(!valid){
             System.out.println("Enter name: ");
             try {
-                name = scan.next();
+                name = scan.nextLine();
                 valid = true;
             } catch (Exception e) {
                 System.out.println("Error: " + e.getMessage());
                 System.out.println("Try again.");
                 System.out.println();
+                scan.next();
             }
         }
         
@@ -85,7 +108,7 @@ public class ProgramWrapper {
         while(!valid){
             System.out.println("Enter email: ");
             try {
-                email = scan.next();
+                email = scan.nextLine();
                 valid = isValidEmail(email);
                 if(!valid){
                     System.out.println("Invalid Email.");
@@ -96,6 +119,7 @@ public class ProgramWrapper {
                 System.out.println("Error: " + e.getMessage());
                 System.out.println("Invalid Email.");
                 System.out.println();
+                scan.next();
             }
         }
         
@@ -114,6 +138,7 @@ public class ProgramWrapper {
                 System.out.println("Error: " + e.getMessage());
                 System.out.println("Invalid Phone Number.");
                 System.out.println();
+                scan.next();
             }
         }        
         return new Client(name.toUpperCase(), email.toLowerCase(), phone);
@@ -138,6 +163,7 @@ public class ProgramWrapper {
             }
             else if (choice==4){
                 Client new_Client= makeClient(scan);
+                menu();
                 valid=true;
             }
             else if (choice==3){
@@ -162,10 +188,7 @@ public class ProgramWrapper {
         
     }
 
-    public static void reserve_seats(){
-        // Level level= UNKNOWN; 
-        Integer row= -1;
-        Integer number=-1;
+    public static  void reserve_seats(){
         Scanner scan= new Scanner(System.in);
         boolean valid= false;
         System.out.println("Please choose the Level:\n");
@@ -175,14 +198,58 @@ public class ProgramWrapper {
         while(!valid){
             String choice= scan.nextLine();
             try{
-                if(choice.equals("G")||choice.equals("g")){
-                    //  level= GRANDSTAND;
+                if(choice.equals("G")||choice.equals("g")){//2,000 seats 
+                    System.out.println("How many seats would you like to reserve:\n");
+                    int amount =scan.nextInt();
+                    for (int i = 0; i < amount; i++) {
+                        System.out.println("Please enter a seat number you would like to reserve:\n");
+                        int seat_num =scan.nextInt();
+                        Seat seat= new Seat(Level.GRANDSTAND,seat_num);
+                         if(stadium.isOccupied(seat)){
+                            //logic for waitlist
+                         }
+                         else{
+                            stadium.available.remove(seat);
+                            stadium.occupied.add(seat);
+                            System.out.println("Seat "+seat_num+" in Grandstand was successfully reserved!");
+                         }
+                    }
                 }
-                else if(choice.equals("F")||choice.equals("f")){
-                    //  level= FIELD;
+                else if(choice.equals("F")||choice.equals("f")){//1,000 seats 
+                    System.out.println("How many seats would you like to reserve:\n");
+                    int amount =scan.nextInt();
+                    for (int i = 0; i < amount; i++) {
+                        System.out.println("Please enter a seat number you would like to reserve:\n");
+                        int seat_num =scan.nextInt();
+                        Seat seat= new Seat(Level.FIELD,seat_num);
+                         if(stadium.isOccupied(seat)){
+                            //logic for waitlist
+                         }
+                         else{
+                            stadium.available.remove(seat);
+                            stadium.occupied.add(seat);
+                            System.out.println("Seat "+seat_num+" in Field was successfully reserved!");
+
+                         }
+                    }
                 }
-                else if(choice.equals("M")||choice.equals("m")){
-                    //  level= MAIN;
+                else if(choice.equals("M")||choice.equals("m")){//500 seats
+                    System.out.println("How many seats would you like to reserve:\n");
+                    int amount =scan.nextInt();
+                    for (int i = 0; i < amount; i++) {
+                        System.out.println("Please enter a seat number you would like to reserve:\n");
+                        int seat_num =scan.nextInt();
+                        Seat seat= new Seat(Level.MAIN,seat_num);
+                         if(stadium.isOccupied(seat)){
+                            //logic for waitlist
+                         }
+                         else{
+                            stadium.available.remove(seat);
+                            stadium.occupied.add(seat);
+                            // reserve(new_Client,seat);
+                            System.out.println("Seat "+seat_num+" in Main was successfully reserved!");
+                         }
+                    }
                 }
 
             }catch(Exception e){

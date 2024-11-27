@@ -1,9 +1,9 @@
 package Include;
-import java.util.Set;
-import java.util.HashSet;
-import java.util.Objects;
-import java.util.Stack;
 import java.util.HashMap;
+import java.util.HashSet;
+import java.util.Set;
+import java.util.Stack;
+
 
 //  .----------------.  .----------------.  .----------------.  .----------------.  .----------------.  .----------------.  .----------------. 
 // | .--------------. || .--------------. || .--------------. || .--------------. || .--------------. || .--------------. || .--------------. |
@@ -25,9 +25,6 @@ public class Stadium {
     // |  _ <  |  __/ \__ \ |  __/ | |     \ V /  | (_| | | |_  | | | (_) | | | | |
     // |_| \_\  \___| |___/  \___| |_|      \_/    \__,_|  \__| |_|  \___/  |_| |_|
     
-
-    
-
     private class Reservation {
         private Client client;
         private Seat seat;
@@ -58,10 +55,10 @@ public class Stadium {
         
     }
 
-    private Set<Seat> available;
-    private Set<Seat> occupied;
-    private Stack<Reservation> reservations;
-    private static HashMap<Client,Set<Seat>> reservedHashMap;
+    public  static Set<Seat> available;
+    public static Set<Seat> occupied;
+    public Stack<Reservation> reservations;
+    public static HashMap<Client,Set<Seat>> reservedHashMap;
 
     public Stadium (){
         available = new HashSet<>();
@@ -78,8 +75,8 @@ public class Stadium {
 
     public Set<Seat> getAvailable() { return this.available; }
     public Set<Seat> getOccupied() { return this.occupied; }
-    public boolean isAvailable(Seat s) { return this.available.contains(s); }
-    public boolean isOccupied(Seat s) { return this.occupied.contains(s); }
+    public  boolean isAvailable(Seat s) { return this.available.contains(s); }
+    public  boolean isOccupied(Seat s) { return this.occupied.contains(s); }
 
     //  ____           _     _                       
     // / ___|    ___  | |_  | |_    ___   _ __   ___ 
