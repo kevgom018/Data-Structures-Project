@@ -187,6 +187,8 @@ public class ProgramWrapper {
                 System.exit(0);
             }
             if(choice==5){
+                transactions(curr_Client);
+                menu();
                 valid=true;
             }
             else if (choice==4){
@@ -233,9 +235,9 @@ public class ProgramWrapper {
         boolean valid= false;
         System.out.println("-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*\n");
         System.out.println("Please choose the Level:\n");
-        System.out.println("(F) Field        || seats available: "+seats_Field+"\n");
-        System.out.println("(M) Main         || seats available: "+seats_Main+"\n");
-        System.out.println("(G) Grandstand   || seats available: "+seats_Grandstand+"\n");
+        System.out.println("(F) Field        ($300)  || seats available: "+seats_Field+"\n");
+        System.out.println("(M) Main         ($120)  || seats available: "+seats_Main+"\n");
+        System.out.println("(G) Grandstand   ($45)   || seats available: "+seats_Grandstand+"\n");
         System.out.println("-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*\n");
         while(!valid){
             String choice= scan.nextLine();
@@ -265,6 +267,7 @@ public class ProgramWrapper {
                          }
                          else{
                             stadium.reserve(client,seat);
+                            client.addClientCost(seat.getCost());
                             System.out.println("Seat "+seat_num+" in Grandstand was successfully reserved!");
                          }
                     }
@@ -296,6 +299,7 @@ public class ProgramWrapper {
                          }
                          else{
                             stadium.reserve(client,seat);
+                            client.addClientCost(seat.getCost());
                             System.out.println("Seat "+seat_num+" in Field was successfully reserved!");
 
                          }
@@ -328,6 +332,7 @@ public class ProgramWrapper {
                          }
                          else{
                             stadium.reserve(client,seat);
+                            client.addClientCost(seat.getCost());
                             System.out.println("Seat "+seat_num+" in Main was successfully reserved!\n");
                          }
                     }
@@ -373,5 +378,7 @@ public class ProgramWrapper {
         }
         menu();
     }
-
+    public static void transactions(Client client){
+        System.out.println("Your total is: $"+client.getTotalCost());
+    }
 }

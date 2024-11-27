@@ -1,4 +1,5 @@
 package Include;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Set;
@@ -103,7 +104,7 @@ public class Stadium {
     //  | |_| | | |_  | | | | |  __/ | |      |  _|   | |_| | | | | | | (__  | |_  | | | (_) | | | | | \__ \
     //   \___/   \__| |_| |_|  \___| |_|      |_|      \__,_| |_| |_|  \___|  \__| |_|  \___/  |_| |_| |___/
    
-
+    
     /**
      * Reserves the given seat for the given client
      * 
@@ -142,12 +143,15 @@ public class Stadium {
 
         if(canceled) {
             
-            //if wait list empty
+            //if wait list not empty
             if(!lastRes.getSeat().getWaitList().isEmpty()){
+                c.removeClientCost(lastRes.getSeat().getCost());
                 Client nextInLine= lastRes.getSeat().nextInWaitList();
+                nextInLine.addClientCost(lastRes.getSeat().getCost());
                 this.addReservedSeatHashMap(nextInLine, lastRes.getSeat());
             }else{
                 available.add(lastRes.getSeat());
+                c.removeClientCost(lastRes.getSeat().getCost());
                 this.removeReservedSeatHashMap(c, lastRes.getSeat());
             }
             //checks getter of seat waitlist, if waitlist not empty, first person wait 
