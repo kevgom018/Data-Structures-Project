@@ -27,11 +27,9 @@ public class Seat {
         GRANDSTAND; // = 45
     };
     private Level level;
-    private boolean  available;
     private Integer row;
     private Integer number;
-    HashSet<Seat> seats;
-    Queue<Client> waitList;
+    private Queue<Client> waitList;
 
 
     public Seat(Level level, Integer row, Integer number){
