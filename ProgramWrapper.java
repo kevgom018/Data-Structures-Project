@@ -30,14 +30,6 @@ public class ProgramWrapper {
         if(!(Character.isLetter(email.charAt(0)) && email.contains("@") && email.indexOf("@") < indexOfDot && email.charAt(indexOfDot) == '.')){
             return false;
         }
-        
-        for(int i = 0; i < email.length(); i++){
-            char c = email.charAt(i);
-            if(!(Character.isLetterOrDigit(c) || c == '@' || c == '.')){
-                return false;
-            }
-        }
-        
         return true;
     }
     
