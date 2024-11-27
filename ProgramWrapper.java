@@ -1,6 +1,5 @@
 import Include.*;
 import java.util.Scanner;
-import java.util.ArrayList;
 
 //  .----------------.  .----------------.  .----------------.  .-----------------.
 // | .--------------. || .--------------. || .--------------. || .--------------. |
@@ -102,7 +101,7 @@ public class ProgramWrapper {
         
         valid = false;
         while(!valid){
-            System.out.println("Enter phone number: ");
+            System.out.println("Enter phone number:");
             try {
                 phone = scan.nextLong();
                 valid = isValidPhoneNum(phone);
@@ -118,6 +117,85 @@ public class ProgramWrapper {
             }
         }        
         return new Client(name.toUpperCase(), email.toLowerCase(), phone);
+    }
+
+    public static void menu(){
+        boolean valid= false; 
+        Scanner scan= new Scanner(System.in);
+        System.out.println("MAIN MENU:\n");
+        System.out.println("(1) Reserve Seats\n");
+        System.out.println("(2) See Reserved Seats\n");
+        System.out.println("(3) Cancel Reservation\n");
+        System.out.println("(4) New Client\n");
+        System.out.println("(5) Quit\n");
+        while (!valid){
+        try {
+            int choice= scan.nextInt();
+            if(choice==5){
+                valid=true;
+                System.out.println("Exiting program, Goodbye!\n");
+                System.exit(0);
+            }
+            else if (choice==4){
+                Client new_Client= makeClient(scan);
+                valid=true;
+            }
+            else if (choice==3){
+                
+                valid=true;
+            }
+            else if(choice==2){
+                valid=true; 
+            }
+            else if (choice==1){
+                reserve_seats();
+                valid=true;
+            }
+            else{
+                valid=false; 
+                System.out.println("This is not a option, Try again:");
+            }
+        } catch (Exception e) {
+            System.out.println("Invalid input, Try again:");
+        }
+    }
+        
+    }
+
+    public static void reserve_seats(){
+        // Level level= UNKNOWN; 
+        Integer row= -1;
+        Integer number=-1;
+        Scanner scan= new Scanner(System.in);
+        boolean valid= false;
+        System.out.println("Please choose the Level:\n");
+        System.out.println("(F) Field\n");
+        System.out.println("(M) Main\n");
+        System.out.println("(G) Grandstand\n");
+        while(!valid){
+            String choice= scan.nextLine();
+            try{
+                if(choice.equals("G")||choice.equals("g")){
+                    //  level= GRANDSTAND;
+                }
+                else if(choice.equals("F")||choice.equals("f")){
+                    //  level= FIELD;
+                }
+                else if(choice.equals("M")||choice.equals("m")){
+                    //  level= MAIN;
+                }
+
+            }catch(Exception e){
+
+            }
+        }
+        //implement
+
+
+    }
+
+    public static void see_seats(){
+        //implement
     }
 
 }
