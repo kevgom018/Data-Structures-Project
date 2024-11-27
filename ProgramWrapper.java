@@ -154,13 +154,13 @@ public class ProgramWrapper {
         try {
             if(first){
                 System.out.println("Please make an account:\n");
-                Client curr_Client= makeClient(scan);
+                curr_Client= makeClient(scan);
                 first=false;
             }
             System.out.println("MAIN MENU:\n");
             System.out.println("(1) Reserve Seats\n");//almost 
             System.out.println("(2) See Reserved Seats\n");//done
-            System.out.println("(3) Cancel Reservation\n");
+            System.out.println("(3) Cancel Reservations\n");//done
             System.out.println("(4) New Client\n");//done
             System.out.println("(5) Quit\n");//done
             int choice= scan.nextInt();
@@ -175,7 +175,7 @@ public class ProgramWrapper {
                 valid=true;
             }
             else if (choice==3){
-                
+                cancel_reservations(curr_Client);
                 valid=true;
             }
             else if(choice==2){
@@ -218,7 +218,14 @@ public class ProgramWrapper {
                         int seat_num =scan.nextInt();
                         Seat seat= new Seat(Level.GRANDSTAND,seat_num);
                          if(stadium.isOccupied(seat)){
-                            //logic for waitlist
+                            System.out.println("That seat is currently unavailable, would you like to be put on the waitlist?\n");
+                            String Y_N =scan.nextLine();
+                            if (Y_N.equals("YES") || Y_N.equals("yes")|| Y_N.equals("Yes")){
+                                seat.addToWaitList(client);
+                            }else{
+                                System.out.println("Please choose a different seat number\n"); 
+                                i--;
+                            }
                          }
                          else{
                             stadium.available.remove(seat);
@@ -237,7 +244,14 @@ public class ProgramWrapper {
                         int seat_num =scan.nextInt();
                         Seat seat= new Seat(Level.FIELD,seat_num);
                          if(stadium.isOccupied(seat)){
-                            //logic for waitlist
+                            System.out.println("That seat is currently unavailable, would you like to be put on the waitlist?\n");
+                            String Y_N =scan.nextLine();
+                            if (Y_N.equals("YES") || Y_N.equals("yes")|| Y_N.equals("Yes")){
+                                seat.addToWaitList(client);
+                            }else{
+                                System.out.println("Please choose a different seat number\n"); 
+                                i--;
+                            }
                          }
                          else{
                             stadium.available.remove(seat);
@@ -257,7 +271,14 @@ public class ProgramWrapper {
                         int seat_num =scan.nextInt();
                         Seat seat= new Seat(Level.MAIN,seat_num);
                          if(stadium.isOccupied(seat)){
-                            //logic for waitlist
+                            System.out.println("That seat is currently unavailable, would you like to be put on the waitlist?\n");
+                            String Y_N =scan.nextLine();
+                            if (Y_N.equals("YES") || Y_N.equals("yes")|| Y_N.equals("Yes")){
+                                seat.addToWaitList(client);
+                            }else{
+                                System.out.println("Please choose a different seat number\n"); 
+                                i--;
+                            }
                          }
                          else{
                             stadium.available.remove(seat);
@@ -275,7 +296,6 @@ public class ProgramWrapper {
                 menu();
             }
         }
-        //implement
 
 
     }
@@ -285,6 +305,12 @@ public class ProgramWrapper {
         Set<Seat> seats= stadium.reservedHashMap.get(client);
         for(Seat seat: seats){
             System.out.println("Level: "+ seat.getLevel()+ "|| Seat Number: " +seat.getNumber());
+        }
+    }
+
+    public static void cancel_reservations(Client client){
+        if(stadium.cancel(client)){
+            System.out.println("Reservation succesfully cancled!");
         }
     }
 
