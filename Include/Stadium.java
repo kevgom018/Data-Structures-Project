@@ -1,7 +1,9 @@
 package Include;
 import java.util.Set;
 import java.util.HashSet;
+import java.util.Objects;
 import java.util.Stack;
+import java.util.HashMap;
 
 //  .----------------.  .----------------.  .----------------.  .----------------.  .----------------.  .----------------.  .----------------. 
 // | .--------------. || .--------------. || .--------------. || .--------------. || .--------------. || .--------------. || .--------------. |
@@ -26,15 +28,19 @@ public class Stadium {
     private class Reservation {
         private Client client;
         private Seat seat;
+        //I think it should have a HashMap pairint the clients with the seats here.
+        private HashMap<Client, Set<Seat>> reservedHashMap;
 
         public Reservation(Client client, Seat seat){
             this.client = client;
             this.seat = seat;
+            this.reservedHashMap= new HashMap<>();
         }
 
         public Reservation(){
             this.client = new Client();
             this.seat = new Seat();
+            this.reservedHashMap= new HashMap<>();
         }
 
         /*
@@ -42,12 +48,21 @@ public class Stadium {
          */
         public Client getClient() { return this.client; }
         public Seat getSeat() { return this.seat; }
+        public HashMap<Client,Set<Seat>> getHashMap() { return this.reservedHashMap; }
         
         /*
          * Setters
          */
         public void setClient(Client c) { this.client = c; }
         public void setSeat(Seat s) { this.seat = s; }
+        public void addReservedSeatHashMap(Client client, Seat seat){
+            client.reserveSeat(seat);
+            reservedHashMap.put(client,client.getReservedSeats());
+        }
+        public void removeReservedSeatHashMap(Client client, Seat seat){
+            client.removeSeat(seat);
+            reservedHashMap.put(client, client.getReservedSeats());
+        }
     }
 
     private Set<Seat> available;
@@ -95,6 +110,7 @@ public class Stadium {
      */
     public boolean reserve(Client c, Seat s) {
         // TODO: add functionality to add this reservation to the map of client to seats
+        
         // The map should be from clients to linkedlists or arraylists (probably linked) of the seats they have
         Reservation res = new Reservation(c, s);
         boolean reserved = available.remove(s);
@@ -103,11 +119,11 @@ public class Stadium {
         if(reserved) {
             this.reservations.push(res);
             occupied.add(s);
+            res.addReservedSeatHashMap(c, s);
         }
         
         return reserved;
     }
-
     /**
      * Cancels the last reservation made
      * 
