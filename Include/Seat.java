@@ -3,6 +3,8 @@ package Include;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.Objects;
+import java.util.Queue;
+import java.util.LinkedList;
 
 //  .----------------.  .----------------.  .----------------.  .----------------. 
 // | .--------------. || .--------------. || .--------------. || .--------------. |
@@ -28,11 +30,13 @@ public class Seat {
     private boolean  Availability;
     private Integer number;
     HashSet<Seat> seats;
+    Queue<Client> waitList;
 
 
     public Seat(Level level,  Integer number){
         this.level = level;
         this.number = number;     
+        this.waitList= new LinkedList<>();
     }
 
     public Seat(){
@@ -62,7 +66,7 @@ public class Seat {
                 return -1;
         }
     }
-
+    public Queue<Client> getWaitList(){return this.waitList; }
     //  ____           _     _                       
     // / ___|    ___  | |_  | |_    ___   _ __   ___ 
     // \___ \   / _ \ | __| | __|  / _ \ | '__| / __|
@@ -78,7 +82,13 @@ public class Seat {
     // | |_| | |_| | | |  __/ |    |  _|| |_| | | | | (__| |_| | (_) | | | \__ \
     //  \___/ \__|_| |_|\___|_|    |_|   \__,_|_| |_|\___|\__|_|\___/|_| |_|___/
 
+    public void addToWaitList(Client c){
+        this.waitList.offer(c);
+    }
 
+    public Client nextInWaitList(){
+        return this.waitList.poll();
+    }
     /**
      * Calculates the total cost of a list of seats
      * 

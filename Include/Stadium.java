@@ -141,8 +141,15 @@ public class Stadium {
         boolean canceled = occupied.remove(lastRes.getSeat());
 
         if(canceled) {
-            available.add(lastRes.getSeat());
-            removeReservedSeatHashMap(c, lastRes.getSeat());
+            
+            //if wait list empty
+            if(!lastRes.getSeat().getWaitList().isEmpty()){
+                Client nextInLine= lastRes.getSeat().nextInWaitList();
+                addReservedSeatHashMap(nextInLine, lastRes.getSeat());
+            }else{
+                available.add(lastRes.getSeat());
+                removeReservedSeatHashMap(c, lastRes.getSeat());
+            }
             //checks getter of seat waitlist, if waitlist not empty, first person wait 
         }
         
