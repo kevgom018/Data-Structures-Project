@@ -74,7 +74,7 @@ public class Client {
      * @return The total cost of the seats
      */
     public int getTotalCost(){
-        LinkedList<Integer>  seats= this.clientCosts;
+        LinkedList<Integer> seats = this.clientCosts;
         if(seats == null) { return 0; }
         int total = 0;
         for(Integer s : seats){
@@ -98,7 +98,7 @@ public class Client {
 
     @Override
     public String toString(){
-        return "Name: " + this.getName() + " Email: " + this.getEmail();
+        return "( Name: " + this.getName() + " Email: " + this.getEmail() + " )";
     }
 
     @Override

@@ -27,20 +27,23 @@ public class Seat {
         GRANDSTAND; // = 45
     };
     private Level level;
-    private boolean  Availability;
+    private boolean  available;
+    private Integer row;
     private Integer number;
     HashSet<Seat> seats;
     Queue<Client> waitList;
 
 
-    public Seat(Level level,  Integer number){
+    public Seat(Level level, Integer row, Integer number){
         this.level = level;
+        this.row = row;
         this.number = number;     
         this.waitList= new LinkedList<>();
     }
 
     public Seat(){
         this.level = Level.UNKNOWN;
+        this.row = -1;
         this.number = -1;   
     }
 
@@ -52,6 +55,7 @@ public class Seat {
 
     public Level getLevel() { return this.level; }
     public Integer getNumber() { return this.number; }
+    public Integer getRow() { return this.row; }
     public int getCost(){
         switch(this.getLevel()){
             case UNKNOWN:
@@ -74,6 +78,7 @@ public class Seat {
     // |____/   \___|  \__|  \__|  \___| |_|    |___/
     
     public void setLevel(Level l) { this.level = l; }
+    public void setRow(Integer r) { this.row = r; }
     public void setNumber(Integer n) { this.number = n; }
 
     //   ___  _   _                 _____                 _   _                 
@@ -107,7 +112,7 @@ public class Seat {
 
     @Override
     public String toString(){
-        return "Level: " + this.getLevel().toString() + " Number: " + this.getNumber();
+        return "( Level: " + this.getLevel().toString() + " Row: " + this.getRow() + " Number: " + this.getNumber() + " )";
     }
 
     @Override

@@ -33,7 +33,6 @@ public class main {
     
         System.out.println("WELCOME TO AREA 51 STADIUM : Ticket reservation system\n");
         System.out.println("-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*\n");
-        ProgramWrapper.create_stadium();
         ProgramWrapper.menu();
 }}
 

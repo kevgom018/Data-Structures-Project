@@ -29,7 +29,6 @@ public class Stadium {
     private class Reservation {
         private Client client;
         private Seat seat;
-        //I think it should have a HashMap pairint the clients with the seats here.
         
 
         public Reservation(Client client, Seat seat){
@@ -66,6 +65,20 @@ public class Stadium {
         occupied = new HashSet<>();
         reservations = new Stack<>();
         reservedHashMap= new HashMap<>();
+
+        // 50 rows of 10 field seats
+        // 100 rows of 10 main seats
+        // 200 rows of 10 grandstand seats
+        int multiplier = 1;
+        for(Seat.Level level : Seat.Level.values()){
+            if(level == Seat.Level.UNKNOWN) { continue; }
+            for(int row = 1; row <= 50 * multiplier; row++){
+                for(int seatNum = 1; seatNum <= 10; seatNum++){
+                    available.add(new Seat(level, row, seatNum));
+                }
+            }
+            multiplier *= 2;
+        }
     }
 
     //   ____          _     _                       
@@ -85,7 +98,6 @@ public class Stadium {
     //  ___) | |  __/ | |_  | |_  |  __/ | |    \__ \
     // |____/   \___|  \__|  \__|  \___| |_|    |___/
 
-    //static due to reservedHashMap being a stadium local variable
     public void addReservedSeatHashMap(Client c, Seat s){
         Set<Seat> tempSet= c.getReservedSeats();
         tempSet.add(s);
@@ -112,10 +124,7 @@ public class Stadium {
      * @param s The seat to be reserved by the client
      * @return A boolean representing whether the reservation was succesful
      */
-    public boolean reserve(Client c, Seat s) {
-        // TODO: add functionality to add this reservation to the map of client to seats
-        
-        // The map should be from clients to linkedlists or arraylists (probably linked) of the seats they have
+    public boolean reserve(Client c, Seat s) {        
         Reservation res = new Reservation(c, s);
         boolean reserved = available.remove(s);
         
@@ -134,9 +143,6 @@ public class Stadium {
      * @return A boolean representing whether the cancellation was succesful
      */
     public boolean cancel(Client c) {
-        // TODO: add functionality to remove the reservation from the list in the map of client to lists of seats
-        // TODO: add functionality to give canceled seat to next client in waitlist (queue) if there is one on waitlist for that seats section
-        // There should be a queue of clients for each of the three sections for waitlisting
         if(reservations.isEmpty()) { return false; }
         Reservation lastRes = reservations.pop();
         boolean canceled = occupied.remove(lastRes.getSeat());
