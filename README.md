@@ -11,5 +11,5 @@ https://patorjk.com/software/taag/#p=display&h=0&v=0&f=Electronic&t=
 
 Fonts:
 
-1. Electronic for class names
+1. Blocks for class names
 2. Standard for function sections
