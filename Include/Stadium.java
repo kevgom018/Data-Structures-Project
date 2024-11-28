@@ -161,6 +161,9 @@ public class Stadium {
     //  | |_| | | |_  | | | | |  __/ | |      |  _|   | |_| | | | | | | (__  | |_  | | | (_) | | | | | \__ \
     //   \___/   \__| |_| |_|  \___| |_|      |_|      \__,_| |_| |_|  \___|  \__| |_|  \___/  |_| |_| |___/
    
+    /**
+     *  Displays the stadium's transaction history in addition to the total revenue.
+     */
     public void transactionsTotalDisplay(){
         if(!this.transactionTotal.isEmpty()){
             System.out.print("Here is the Stadium's transaction History: \n");
@@ -216,7 +219,7 @@ public class Stadium {
 
         if(canceled) {
             if(lastRes.getSeat().getLevel().equals(Seat.Level.FIELD)){
-                //if wait list not empty
+                
                 if(!this.getFieldLvlWaitList().isEmpty()){
                     c.removeClientCost(lastRes.getSeat().getCost());
                     
@@ -234,7 +237,7 @@ public class Stadium {
                 }
             }
             else if(lastRes.getSeat().getLevel().equals(Seat.Level.MAIN)){
-                //if wait list not empty
+            
                 if(!this.getMainLvlWaitList().isEmpty()){
                     c.removeClientCost(lastRes.getSeat().getCost());
                     if(!this.getMainLvlWaitList().isEmpty()){
@@ -251,7 +254,7 @@ public class Stadium {
                 }
             }
             else if(lastRes.getSeat().getLevel().equals(Seat.Level.GRANDSTAND)){
-                //if wait list not empty
+                
                 if(!this.getGrandstandLvlWaitList().isEmpty()){
                     c.removeClientCost(lastRes.getSeat().getCost());
                     if(!this.getGrandstandLvlWaitList().isEmpty()){
@@ -268,7 +271,6 @@ public class Stadium {
                 }
             }
            
-            //checks getter of seat waitlist, if waitlist not empty, first person wait 
         }
         
         return canceled;
