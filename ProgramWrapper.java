@@ -236,11 +236,14 @@ public class ProgramWrapper {
                             String Y_N = scan.nextLine().toUpperCase();
                             if (Y_N.equals("YES")){
                                 stadium.addToGrandstandLvlWaitList(client);
-                            }else{
-                                System.out.println("Please choose a different seat number\n"); 
+                            }
+                            break;
+                        }
+                        else if(stadium.isOccupied(seat)){
+                                System.out.println("This seat is already reserved\n");
+                                System.out.println("Please choose a different seat\n"); 
                                 i--;
                             }
-                         }
                          else{
                             stadium.reserve(client,seat);
                             stadium.incrementCurrGradstandLvlCap();
@@ -277,11 +280,13 @@ public class ProgramWrapper {
                             String Y_N = scan.nextLine().toUpperCase();
                             if (Y_N.equals("YES")){
                                 stadium.addToFieldLvlWaitList(client);
-                            }else{
-                                System.out.println("Please choose a different seat number\n"); 
-                                i--;
                             }
                          }
+                         else if(stadium.isOccupied(seat)){
+                            System.out.println("This seat is already reserved\n");
+                            System.out.println("Please choose a different seat\n"); 
+                            i--;
+                        }
                          else{
                             stadium.reserve(client,seat);
                             stadium.incrementCurrFieldLvlCap();
@@ -319,11 +324,13 @@ public class ProgramWrapper {
                             String Y_N = scan.nextLine().toUpperCase();
                             if (Y_N.equals("YES")){
                                 stadium.addToMainLvlWaitList(client);
-                            }else{
-                                System.out.println("Please choose a different seat number\n"); 
-                                i--;
                             }
                          }
+                         else if(stadium.isOccupied(seat)){
+                            System.out.println("This seat is already reserved\n");
+                            System.out.println("Please choose a different seat\n"); 
+                            i--;
+                        }
                          else{
                             stadium.reserve(client,seat);
                             stadium.incrementCurrMainLvlCap();
@@ -333,6 +340,9 @@ public class ProgramWrapper {
                     }
                     return;
                     
+                }
+                else {
+                    System.out.println("Invalid input. Please enter 'F' for Field, 'M' for Main, or 'G' for Grandstand.");
                 }
             }} catch(Exception e){
                 System.out.println("ERROR: incorrect value type, Sending back to menu\n");
