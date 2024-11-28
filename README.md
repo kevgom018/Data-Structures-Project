@@ -2,14 +2,10 @@
 
 Personal Repo for transfer to class submission
 
-[![Review Assignment Due Date](https://classroom.github.com/assets/deadline-readme-button-22041afd0340ce965d47ae6ef1cefeee28c7c493a6346c4f15d667ab976d596c.svg)](https://classroom.github.com/a/yejrih7Q)
-[![Open in Visual Studio Code](https://classroom.github.com/assets/open-in-vscode-2e0aaae1b6195c2367325f4f02e2d04e9abb55f0b24a779b69b11b9e10269abc.svg)](https://classroom.github.com/online_ide?assignment_repo_id=17072770&assignment_repo_type=AssignmentRepo)
+KEVIN J GOMEZ GUZMAN||
+SOLIMAR CRUZ HERNANDEZ||
+JORGE L DELEON-ORAMA||
 
-For ASCII art:
+Our program implements a Seat Reservation System for a baseball stadium. We allow users to easily manage seat availability, make reservations, handle cancellations, manage waitlists for sold-out sections, see their reservations , and more. The system provides users with the ability to view available sections and seats, check the cost of seats, and reserve them for clients while keeping track of the transactions made . When a section is full, clients can be added to a waitlist if they wish to do so, and the system will automatically assign available seats to the first client in line once that seats reservation is canceled.
+We used many data structures to optimize the performance and functionality of our code. We used a HashSet, a set, to store available seats, ensuring no duplicates. We then used a Hashmap ,a map, with keys of clients assigned to a set of seats. This was done to associate clients with their many reserved seats and  for quick retrieval of a clients reserved seats. We implemented a LinkedList used as a Qeue  to implement the waitlist.This waitlist follows the First-In-First-Out principle. Finally, we used a Stack to enable the cancellation functionality, allowing the user to reverse the most recent reservation. 
 
-https://patorjk.com/software/taag/#p=display&h=0&v=0&f=Electronic&t= 
-
-Fonts:
-
-1. Blocks for class names
-2. Standard for function sections
