@@ -62,6 +62,7 @@ public class Stadium {
     public Set<Seat> occupied;
     public Stack<Reservation> reservations;
     public HashMap<Client,Set<Seat>> reservedHashMap;
+    public LinkedList<Integer> transactionTotal;
     public Queue<Client> fieldLvlWaitList;
     public Queue<Client> mainLvlWaitList;
     public Queue<Client> grandstandLvlWaitList;
@@ -74,6 +75,7 @@ public class Stadium {
         occupied = new HashSet<>();
         reservations = new Stack<>();
         reservedHashMap= new HashMap<>();
+        transactionTotal= new LinkedList<>();
         fieldLvlWaitList= new LinkedList<>();
         mainLvlWaitList= new LinkedList<>();
         grandstandLvlWaitList= new LinkedList<>();
@@ -104,6 +106,7 @@ public class Stadium {
 
     public Set<Seat> getAvailable() { return this.available; }
     public Set<Seat> getOccupied() { return this.occupied; }
+    public LinkedList<Integer> getTransactionTotal(){ return this.transactionTotal; }
 
     public Integer getCurrentFieldLvlCap(){ return this.currFieldLvlCap;}
     public Integer getCurrentMainLvlCap() { return this.currMainLvlCap; }
@@ -137,6 +140,9 @@ public class Stadium {
     public Client nextInMainLvlWaitList(){ return this.mainLvlWaitList.poll(); }
     public Client nextInGrandstandLvlWaitList(){ return this.grandstandLvlWaitList.poll(); }
 
+    public void addToTransactionTotal(Integer cost){ this.transactionTotal.add(cost); }
+    public void removeFromTransactionTotal(Integer cost){ this.transactionTotal.remove(cost); }
+
     public void addReservedSeatHashMap(Client c, Seat s){
         Set<Seat> tempSet= c.getReservedSeats();
         tempSet.add(s);
@@ -155,7 +161,27 @@ public class Stadium {
     //  | |_| | | |_  | | | | |  __/ | |      |  _|   | |_| | | | | | | (__  | |_  | | | (_) | | | | | \__ \
     //   \___/   \__| |_| |_|  \___| |_|      |_|      \__,_| |_| |_|  \___|  \__| |_|  \___/  |_| |_| |___/
    
-    
+    public void transactionsTotalDisplay(){
+        if(!this.transactionTotal.isEmpty()){
+            System.out.print("Here is the Stadium's transaction History: \n");
+            int sum=0;
+            for(Integer cost : this.transactionTotal){
+                sum+=cost;
+                if(cost==300){
+                    System.out.println("Level :: Field       ||  Price: $"+cost);
+                }
+                else if(cost==120){
+                    System.out.println("Level :: Main        ||  Price: $"+cost);
+                }
+                else if(cost==45){
+                    System.out.println("Level :: Grandstand  ||  Price: $"+cost);
+                }
+            }
+            System.out.println("\nTotal Revenue: $"+sum+"\n");
+        }else{
+            System.out.println("\nThe Stadium currently has no transactions.\n");
+        }
+    }
     /**
      * Reserves the given seat for the given client
      * 
@@ -193,6 +219,7 @@ public class Stadium {
                 //if wait list not empty
                 if(!this.getFieldLvlWaitList().isEmpty()){
                     c.removeClientCost(lastRes.getSeat().getCost());
+                    
                     if(!this.getFieldLvlWaitList().isEmpty()){
                         Client nextInLine = this.nextInFieldLvlWaitList();
                         nextInLine.addClientCost(lastRes.getSeat().getCost());
@@ -201,6 +228,7 @@ public class Stadium {
                 }else{
                     available.add(lastRes.getSeat());
                     c.removeClientCost(lastRes.getSeat().getCost());
+                    this.removeFromTransactionTotal(lastRes.getSeat().getCost());
                     this.decrementCurrFieldLvlCap();
                     this.removeReservedSeatHashMap(c, lastRes.getSeat());
                 }
@@ -217,6 +245,7 @@ public class Stadium {
                 }else{
                     available.add(lastRes.getSeat());
                     c.removeClientCost(lastRes.getSeat().getCost());
+                    this.removeFromTransactionTotal(lastRes.getSeat().getCost());
                     this.decrementCurrMainLvlCap();
                     this.removeReservedSeatHashMap(c, lastRes.getSeat());
                 }
@@ -233,6 +262,7 @@ public class Stadium {
                 }else{
                     available.add(lastRes.getSeat());
                     c.removeClientCost(lastRes.getSeat().getCost());
+                    this.removeFromTransactionTotal(lastRes.getSeat().getCost());
                     this.decrementCurrGrandstandLvlCap();
                     this.removeReservedSeatHashMap(c, lastRes.getSeat());
                 }

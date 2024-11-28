@@ -151,14 +151,18 @@ public class ProgramWrapper {
                 System.out.println("(2) See Reserved Seats\n");
                 System.out.println("(3) Cancel Reservations\n");
                 System.out.println("(4) New Client\n");
-                System.out.println("(5) View transactions\n");
-                System.out.println("(6) Quit\n");
+                System.out.println("(5) View Current Client Transactions\n");
+                System.out.println("(6) View Transaction History\n");
+                System.out.println("(7) Quit\n");
                 System.out.println("-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*\n");
                 int choice= scan.nextInt();
                 scan.nextLine();
-                if(choice == 6){
+                if(choice == 7){
                     System.out.println("Exiting program, Goodbye!\n");
                     System.exit(0);
+                }
+                else if(choice == 6){
+                    stadium.transactionsTotalDisplay();
                 }
                 else if(choice == 5){
                     transactions(curr_Client);
@@ -214,6 +218,10 @@ public class ProgramWrapper {
                 if(choice.equals("G")){//2,000 seats 
                     System.out.println("How many seats would you like to reserve:\n");
                     int amount = scan.nextInt();
+                    if(amount==0){
+                        System.out.println("\nNo seats were reserved.\n");
+                    }
+
                     for (int i = 0; i < amount; i++) {
                         System.out.println("Please enter a seat row you would like to reserve a seat in:\n");
                         int seat_row = scan.nextInt();
@@ -247,6 +255,7 @@ public class ProgramWrapper {
                          else{
                             stadium.reserve(client,seat);
                             stadium.incrementCurrGradstandLvlCap();
+                            stadium.addToTransactionTotal(seat.getCost());
                             client.addClientCost(seat.getCost());
                             System.out.println("Seat #"+seat_num+", Row #"+seat_row+" in Grandstand was successfully reserved!");
                          }
@@ -257,6 +266,9 @@ public class ProgramWrapper {
                 else if(choice.equals("F")){//1,000 seats 
                     System.out.println("How many seats would you like to reserve:\n");
                     int amount = scan.nextInt();
+                    if(amount==0){
+                        System.out.println("\nNo seats were reserved.\n");
+                    }
                     
                     for (int i = 0; i < amount; i++) {
                         System.out.println("Please enter a seat row you would like to reserve seat in:\n");
@@ -290,6 +302,7 @@ public class ProgramWrapper {
                          else{
                             stadium.reserve(client,seat);
                             stadium.incrementCurrFieldLvlCap();
+                            stadium.addToTransactionTotal(seat.getCost());
                             client.addClientCost(seat.getCost());
                             System.out.println("Seat #"+seat_num+", Row #"+seat_row+" in Field was successfully reserved!");
 
@@ -301,7 +314,10 @@ public class ProgramWrapper {
                 else if(choice.equals("M")){ //500 seats
                     System.out.println("How many seats would you like to reserve:\n");
                     int amount = scan.nextInt();
-                   
+                    if(amount==0){
+                        System.out.println("\nNo seats were reserved.\n");
+                    }
+
                     for (int i = 0; i < amount; i++) {
                         System.out.println("Please enter a seat row you would like to reserve a seat in:\n");
                         int seat_row = scan.nextInt();
@@ -334,6 +350,7 @@ public class ProgramWrapper {
                          else{
                             stadium.reserve(client,seat);
                             stadium.incrementCurrMainLvlCap();
+                            stadium.addToTransactionTotal(seat.getCost());
                             client.addClientCost(seat.getCost());
                             System.out.println("Seat #" + seat_num +", Row #"+seat_row+" in Main was successfully reserved!\n");
                          }
