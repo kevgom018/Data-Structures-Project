@@ -159,6 +159,7 @@ public class ProgramWrapper {
                 scan.nextLine();
                 if(choice == 7){
                     System.out.println("Exiting program, Goodbye!\n");
+                    scan.close();
                     System.exit(0);
                 }
                 else if(choice == 6){
@@ -180,7 +181,7 @@ public class ProgramWrapper {
                     see_seats(curr_Client);
                 }
                 else if (choice == 1){
-                    reserve_seats(curr_Client);
+                    reserve_seats(curr_Client, scan);
                 }
                 else{
                     System.out.println("This is not a option, Try again:");
@@ -203,9 +204,8 @@ public class ProgramWrapper {
      * @param Client the client currently logged in.
      * 
      */
-    public static  void reserve_seats(Client client){
-        Scanner scan= new Scanner(System.in);
-        boolean valid= false;
+    public static  void reserve_seats(Client client, Scanner scan){
+        boolean valid = false;
         try{
         System.out.println("-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*\n");
         System.out.println("Please choose the Level:\n");
