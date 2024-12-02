@@ -1,9 +1,3 @@
-import Include.Client;
-import Include.Stadium;
-import Include.Seat;
-import Include.Seat.Level;
-import java.util.InputMismatchException;
-import java.util.Scanner;
 
 //  .----------------.  .----------------.  .----------------.  .-----------------.
 // | .--------------. || .--------------. || .--------------. || .--------------. |
@@ -34,5 +28,6 @@ public class main {
         System.out.println("WELCOME TO AREA 51 STADIUM : Ticket reservation system\n");
         System.out.println("-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*\n");
         ProgramWrapper.menu();
-}}
+    }
+}
 
